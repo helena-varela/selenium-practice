@@ -4,12 +4,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+usuario = os.getenv("SIGAA_USER")
+senha = os.getenv("SIGAA_PASS")
+if not usuario or not senha:
+    raise ValueError("Variáveis SIGAA_USER e SIGAA_PASS não foram encontradas no .env")
+
 driver = webdriver.Chrome()
 
 try:
     driver.get("https://autenticacao.ufrn.br/sso-server/login?service=https%3A%2F%2Fsigaa.ufrn.br%2Fsigaa%2Flogin%2Fcas")
-    driver.find_element(By.ID, "username").send_keys("pessoa.sobrenome.000")
-    driver.find_element(By.ID, "password").send_keys("12345678")
+    driver.find_element(By.ID, "username").send_keys(usuario)
+    driver.find_element(By.ID, "password").send_keys(senha)
     driver.find_element(By.CLASS_NAME, "btn-primary").click()
 
     try:
